@@ -1,0 +1,74 @@
+import React, { Component } from "react";
+import "./App.css";
+
+//Componentes de Classe
+export default class CadastroUsuario extends Component {
+  constructor() {
+    super();
+    this.state = {
+      nome: "",
+      email: "",
+      telefone: "",
+      pessoas: []
+    }
+
+    this.cadastrarUsuario = this.cadastrarUsuario.bind(this);
+    this.excluir = this.excluir.bind(this);
+  }
+
+  excluir(event) {
+    event.preventDefault();
+    this.state.pessoas.splice(event.target.id, 1);
+    this.setState({
+      pessoas: this.state.pessoas
+    })
+  }
+
+
+  cadastrarUsuario(evento) {
+    evento.preventDefault();
+    this.setState({ pessoas: [...this.state.pessoas, [this.state.nome, this.state.email, this.state.telefone]] })
+
+  }
+
+  render() {
+    return (
+      <>
+        <form onSubmit={this.cadastrarUsuario}>
+          <label>Nome</label>
+          <input type="text" onInput={(val) => { this.setState({ nome: val.target.value }) }} />
+          <label>Email</label>
+          <input type="email" onInput={(val) => { this.setState({ email: val.target.value }) }} />
+          <label>Telefone</label>
+          <input type="tel" onInput={(val) => { this.setState({ telefone: val.target.value }) }} />
+          <input type="submit" />
+
+        </form>
+
+        <table>
+          <tbody>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+            </tr>
+
+
+            {this.state.pessoas.map((pessoa, index) => (
+
+              <tr key={index * 10}>
+                <td>{pessoa[0]}</td>
+                <td>{pessoa[1]}</td>
+                <td>{pessoa[2]}</td>
+                <td><button key={index} id={index} onClick={this.excluir}>Excluir</button></td>
+              </tr>
+
+            )
+            )}
+          </tbody>
+
+        </table>
+      </>
+    );
+  }
+}
